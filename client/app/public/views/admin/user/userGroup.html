@@ -1,0 +1,35 @@
+  <table id="example2" class="table table-bordered table-hover" ng-controller="userManagementCtrl">
+    <thead>
+    <tr>
+        <th class="col-md-2 col-xs-2">Usernames</th>
+        <th class="col-md-2 col-xs-2">Email</th>
+        
+        
+        <th class="col-md-2 col-xs-2">last Active</th>
+        <th class="col-md-2 col-xs-2">Edit</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in users">
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        
+        
+        <td>temp</td>
+        <td>
+            <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Action
+            </a>
+          
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" ng-click="deleteUser(user._id)">Delete</a>
+              <a class="dropdown-item" >Another action</a>
+              <a class="dropdown-item" >Something else here</a>
+            </div>
+          </div>
+        </td>
+    </tr>
+  
+    </tfoot>
+  </table>

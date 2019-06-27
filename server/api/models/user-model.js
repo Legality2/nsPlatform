@@ -4,7 +4,10 @@ var crypto = require('crypto');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var config = require('../../config/config.js');
-
+var conversation = require('./messages/convoSchema.js');
+var customer = require('./customer/customer.js');
+var todos = require('./events/eventModel.js');
+var contracts = require('./customer/contract.js');
 var UserSchema = new Schema({
   username: {
         type: String,
@@ -12,26 +15,27 @@ var UserSchema = new Schema({
         required: true
     },
   email: String,
+  fullName: {type: String},
   password: {
         type: String,
         required: true
     },
-    following: {
-        followingCount: Num,
-        follwing: []
-    },
-    followers: {
-        followerCount: num,
-        follwers: []
-    },
   socketId: String,
   token: String,
-  userId: Schema.Types.ObjectId,
-  role:  {
+  customers: [{type: Schema.Types.ObjectId, ref: 'customer'}],
+  contracts: [{type: Schema.Types.ObjectId, ref: 'contract'}],
+  todos: [{type: Schema.Types.ObjectId, ref: 'todoSchema'}],
+  inbox: [{type: Schema.Types.ObjectId, ref: 'conversation'}],
+  userType:  {
         type: String,
-        enum : ['Photography','Graphic Design', 'Music'],
+        enum : ['Realtor', 'Designer', 'Creative'],
         default: 'Creative'
-    }
+    },
+  role: {
+    type: String,
+    enum : ['Basic', 'Admin'],
+    default: 'Basic'
+},
 });
 
 // Bcrypt middleware on UserSchema
@@ -69,6 +73,7 @@ UserSchema.methods.generateJWT = function(){
     this.token = jwt.sign({
       userId: this.userId,
       username: this.username,
+      _id: this._id,
       role: this.role,
       exp: parseInt(exp.getTime() / 1000),
     }, config.secret);

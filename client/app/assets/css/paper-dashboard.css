@@ -4617,7 +4617,7 @@ License - nucleoapp.com/license/
   overflow: auto;
   width: 260px;
   z-index: 4;
-  background-color: #231f1f;
+  background-color: #101731;
   padding-bottom: 100px;
 }
 
@@ -6428,5 +6428,10 @@ License - nucleoapp.com/license/
     padding: 15px;
   }
 }
+
+.sideLi:hover {
+background-color: yellowgreen;
+}
+
 
 /*# sourceMappingURL=dashboard-free.css.map */

@@ -1,17 +1,22 @@
 <div class="login-clean" >
-        <form method="post" style="border:2px solid  rgb(173,152,42);">
+        <form style="border:2px solid  rgb(173,152,42);">
             <h2 class="sr-only">Login Form</h2>
             <div class="illustration"><i class="icon ion-ios-navigate" style="color:rgb(220,176,20);"></i>
-                <h2 style="color:rgb(203,144,29);font-weight:bold;font-size: 14px;">NS Creative</h2></div>
+                <h2 style="color:rgb(203,144,29);font-weight:bold;font-size: 14px;">NS Creative <span style="font-size:14px;color: #145456;">BETA</span></h2>
+                
+            </div>
            
             <div class="form-group">
-                <input type="username" name="username" placeholder="username" ng-model="authLoginController.user.username" class="form-control" />
+                <input type="Username" name="Username" placeholder="Username" ng-model="User.Username" class="form-control" />
             </div>
             <div class="form-group">
-                <input type="password" name="username" placeholder="Password" ng-model="authLoginController.user.password" class="form-control" />
+                <input type="password" name="password" placeholder="Password" ng-model="User.password" class="form-control" />
             </div>
             
             <div class="form-group">
-                <button class="btn btn-primary btn-block" type="submit" ng-click="authLoginController.onLogin()" style="background-color:rgb(210,177,8);">Log In</button>
-            </div><a href="#" class="forgot">Forgot your email or password?</a></form>
+                <button class="btn btn-primary btn-block" type="submit" ng-click="logIn(User)" style="background-color:rgb(132, 111, 8);">Log In</button>
+            </div>
+            <a href="#" class="forgot">Forgot your email or password?</a>
+            <p style="text-align:center;"><a ui-sref="signup" class=" btn signup" style="background-color: #d2b108;">signup!</a></p>
+        </form>
     </div>

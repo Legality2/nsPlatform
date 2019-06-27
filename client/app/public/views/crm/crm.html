@@ -1,0 +1,141 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <a class="navbar-brand" href="#">CRM</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" ui-sref="creative.crm.dash">Home<span class="sr-only">(current)</span></a>
+            </li>
+            
+              <div class="dropdown nav-link">
+                    <a class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Customers
+                    </a>
+                  
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item" ui-sref="creative.crm.customers.customerList">customer list</a>
+                      <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal">add new customer</a>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </div>
+            
+            <li class="nav-item">
+                    <div class="dropdown nav-link">
+                            <a class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Events
+                            </a>
+                          
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                              <a class="dropdown-item" ui-sref="creative.crm.customers.customerList">customer list</a>
+                              <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal">add new customer</a>
+                              <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                          </div>
+            </li>
+            <li class="nav-item">
+              <div class="dropdown nav-link">
+                    <a class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Contracts
+                    </a>
+                  
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item" ui-sref="creative.crm.contracts.contractList">Contract list</a>
+                      <a class="dropdown-item" data-toggle="modal" data-target="#contractModal">add new contract</a>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div ui-view></div>
+      <aside>  
+      <!-- Modal -->
+      <div ng-controller="custCtrl" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">new customer</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                    <form class="custom-form">
+                                    
+                            <div class="form-row form-group">
+                                <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Customer Name </label></div>
+                                <div class="col-sm-6 input-column"><input class="form-control" ng-model="newCust.fullName" type="text"></div>
+                            </div>
+                            <div class="form-row form-group">
+                                <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Phone</label></div>
+                                <div class="col-sm-6 input-column"><input class="form-control" ng-model="newCust.phone" type="text"></div>
+                            </div>
+                            <div class="form-row form-group">
+                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Email</label></div>
+                                    <div class="col-sm-6 input-column"><input class="form-control" ng-model="newCust.email" type="text"></div>
+                            </div>
+                           
+
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">you sure you want to create new channel?</label>
+                            </div>
+                        </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" ng-click="createCust()">Create Customer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!--contracts modal-->
+        <div class="modal fade" id="contractModal" tabindex="-1" role="dialog" aria-labelledby="contractModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="contractModalLabel">Contract Form</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body" ng-controller="contCtrl">
+                            <form class="custom-form">
+                                <div class="form-row form-group">
+                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Customer</label></div>
+                                    <select ng-model="newCon.customer" class="form-control" id="sel1" name="sellist1">
+                                        <option ng-repeat="cust in customers" value="{{cust._id}}">{{cust.fullName}}</option>
+                                        
+                                      </select> 
+                                  </div>
+                                    <div class="form-row form-group">
+                                        <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Contract info </label></div>
+                                        <div class="col-sm-6 input-column"><input class="form-control" ng-model="newCon.contractSummary" type="text"></div>
+                                    </div>
+                                    <div class="form-row form-group">
+                                        <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Phone</label></div>
+                                        <div class="col-sm-6 input-column"><input class="form-control" ng-model="newCust.phone" type="text"></div>
+                                    </div>
+                                    <div class="form-row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Email</label></div>
+                                            <div class="col-sm-6 input-column"><input class="form-control" ng-model="newCust.email" type="text"></div>
+                                    </div>
+                                   
+
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">you sure you want to create new channel?</label>
+                                    </div><button class="btn btn-light submit-button" type="button" ng-click="createContract()">Submit Form</button>
+                                </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+
+      </aside>

@@ -1,0 +1,19 @@
+#example {
+  margin-bottom: 0;
+}
+
+body {
+  color: white;
+}
+
+#chan:hover {
+  background-color: rgba(0,38,73,0.67);
+}
+
+.siteColor {
+}
+
+.siteColor {
+  background-color: rgb(25,52,65);
+}
+

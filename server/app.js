@@ -1,20 +1,37 @@
 var express = require('express');
+var config = require('./config/config.js');
 var mongoose = require('mongoose');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+//models
+var User = require('./api/models/user-model.js');
+//controllers
+var conversation = require('./api/models/messages/convoSchema.js');
+var message = require('./api/models/messages/msgModel.js');
+var convCtrl = require('./api/controllers/msgCtrl.js');
 //routes
-var authRouter = require('./api/routes/auth.js');
-
+var authRoute = require('./api/routes/auth.js');
+var crmRoute = require('./api/routes/crm.js');
+var userRoute = require('./api/routes/userRoute.js');
+var todoRoute = require('./api/routes/todoRoute.js');
+var convoRoute = require('./api/routes/message.js');
 var app = express();
+var router = express.Router();
+var options = {
+  user: "admin",
+  pass: "password"
+  };
+  
 //connection to database
 //Set up default mongoose connection
-var mongoDB = 'mongodb://127.0.0.1:27017/nsdatabase';
+var mongoDB = config.db;
 mongoose.connect(mongoDB,  { useNewUrlParser: true }, function(){
   console.log('connecting to NS Datbase');
 });
+
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
 //Get the default connection
@@ -35,15 +52,27 @@ app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, '../client/app/public')));
 app.use('/assets', express.static(path.join(__dirname, '../client/app/assets')));
 app.use('/views', express.static(path.join(__dirname, '../client/app/public/views')));
+app.use('/admin', express.static(path.join(__dirname, '../client/app/public/views/admin')));
+
 app.use('/imgs', express.static(path.join(__dirname, '../client/app/public/imgs')));
 app.use('/node_modules', express.static(path.join(__dirname, './node_modules')));
+app.use(router);
 
-
-
+app.use('/api/convo', convoRoute);
+app.use('/api/crm', crmRoute);
+app.use('/api', todoRoute);
+app.use('/api', userRoute);
 app.use('/api/auth', authRoute);
+
 
 app.get('*', function(req, res){
   res.sendFile(path.join(__dirname, '../client/app/index.html'));
+});
+
+app.post('/con/new', function(req, res, next){
+ 
+  
+  console.log(req.body);
 });
 
 // catch 404 and forward to error handler

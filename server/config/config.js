@@ -1,5 +1,6 @@
 module.exports = {
 	'secret': 'wh0d0Ul0ve',
+	'localDB': 'mongodb://localhost:27017/nsdatabase',
 	'db': 'mongodb://localhost:27017/nsCreative',
-	'secureDB': 'mongodb://content:here4@127.0.0.1:27017/ps?authSource=admin/here4reason'
+	'secureDB': 'mongodb://admin:password@192.168.1.126:27017/nsDatabase?authSource=admin'
 };

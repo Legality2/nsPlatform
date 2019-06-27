@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="card-body" style="background-color: #212121;">
+       <div class="card" style="background-color: #00335b;color: white;">
+           <h3 class="card-header text-center font-weight-bold text-uppercase py-4">User List</h3>
+           <div class="card-body">
+            <table id="example2" class="table table-bordered table-hover" style="color: white;" ng-controller="userManagementCtrl">
+      <thead>
+      <tr>
+          <th class="col-md-2 col-xs-2">Usernames</th>
+          <th class="col-md-2 col-xs-2">Email</th>
+          <th class="col-md-2 col-xs-2">contracts</th>
+          <th class="col-md-2 col-xs-2">customers</th>
+          <th class="col-md-2 col-xs-2">last Active</th>
+          <th class="col-md-2 col-xs-2">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="user in users">
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.contracts.length }}</td>
+          <td>{{ user.customers.length }}</td>
+          <td>temp</td>
+          <td>
+              <div class="dropdown">
+              <a class="btn-rotate dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="nc-icon nc-settings-gear-65"></i>
+              </a>
+            
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" ng-click="deleteUser(user._id)">Delete</a>
+                <a class="dropdown-item" >Another action</a>
+                <a class="dropdown-item" ui-sref="creative.userManagement.editUser({userId: user._id})" > Edit User
+                  
+                </a>
+              </div>
+            </div>
+          </td>
+      </tr>
+    
+      </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>

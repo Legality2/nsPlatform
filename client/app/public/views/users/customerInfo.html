@@ -1,0 +1,96 @@
+<div class="card" ng-controller="customerCtrl">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <p class="text-center"><img></p>
+                                <h5 style="color: #333333;font-size: 12px;">{{customer.fullName}}</h5>
+                            </li>
+                            <li class="list-group-item">
+                                <ul style="color: #333333;list-style-type: none;">
+                                    <li style="font-size: 9px;">Company Name</li>
+                                    <li style="font-size: 9px;">CSR</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body" style="height: 300px;overflow-x: hidden;overflow-y:scroll;">
+                        <ul class="list-group">
+                            <li class="list-group-item"> <input type="text" class="form-control" placeholder="Fullname" ng-model="customer.fullName"></li>
+                            <li class="list-group-item"><input type="tel" class="form-control" placeholder="number" ng-model="customer.number"></li>
+                            <li class="list-group-item"><input type="text" class="form-control" placeholder="email" ng-model="customer.email"></li>
+                            <li class="list-group-item"><input type="text" class="form-control" placeholder="company" ng-model="customer.company.name" ></li>
+                            <li class="list-group-item"><input type="text" class="form-control" placeholder="industry" ng-model="customer.company.industry" aria-label="Username" ></li>
+                            <li class="list-group-item"><p>
+                                <textarea class="form-control" ng-model="customer.description" aria-label="With textarea"></textarea>
+                            </p></li>
+                          </ul>
+                    </div>
+                    <button class="btn">Edit</button>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header" id="cardHead" style="height:50px;">
+                        <h5 style="color:white;">Customer Contracts</h5>
+                    </div>
+                    <div class="card-body" style="max-height: 240px;margin: 14px;overflow-x: scroll;overflow-y: hidden;">
+                        <div class="row" style="overflow-x: scroll;overflow-y: hidden;">
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-header" id="cardHead">Contract Name</div>
+                                    <div class="card-body" style="background-color: white;" >
+                                            <ul class="list-group">
+                                                <li class="list-group-item">Status: {{}}</li>
+                                                <li class="list-group-item">lengthOfContract</li>
+                                            </ul>
+                                           <button class="btn"ui-sref="creative.crm.contracts.contract({contId: customer._id})">View Contract</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-body" style="background-color: white;"></div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-body" style="background-color: white;"></div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-body" style="background-color: white;"></div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-body" style="background-color: white;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
+<script type="text/ng-template" id="myPopoverTemplate.html">
+    <div>{{dynamicPopover.content}}</div>
+    <div class="form-group">
+      <label>Popup Title:</label>
+      <input type="text" ng-model="dynamicPopover.title" class="form-control">
+    </div>
+</script>

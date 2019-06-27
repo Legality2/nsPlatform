@@ -1,0 +1,65 @@
+<div class="card" >
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header" id="cardHead" style="background-color: rgba(0,38,73,0.67);"><h5>User Contracts</h5></div>
+                    <div class="card-body" style="overflow-y: scroll;height: 350px;">
+                        <ul class="list-group">
+                            <li ng-repeat="con in contracts" class="list-group-item" style="height:120px;">
+                                <div style="border:3px solid black;margin-top:-10px;">
+                                <ul class="text-center" style="list-style-type: none;color: #333333;padding: 5px;width: 100%;">
+                                    <li class="border rounded-0 border-dark shadow-sm d-inline col-2">Contract name</li>
+                                    <li class="d-inline col-2"><button class="btn bg-dark" style="height:35px;font-size:14px;" type="button">View Contract</button></li>
+                                    <li class="d-inline col-2">Contractee:{{con.details.customer.fullName}}</li>
+                                </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="card ">
+                    <div class="card-header" style="background-color: rgba(0,38,73,0.67);"></div>
+                    <div class="card-body" style="height: 219px;"></div>
+                </div>
+                <div class="card ">
+                        <div class="card-header" style="background-color: rgba(0,38,73,0.67);"></div>
+                        <div class="card-body" style="height: 119px;"></div>
+                    </div>
+            </div>
+            
+            <div class="col-md-12">
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header" id="cardHead" style="height:50px;">
+                        <h5 style="color: white;">Other Customers</h5>
+                    </div>
+                    <div class="card-body" style="height: 220px;margin: 14px;overflow-x: scroll;overflow-y:hidden;">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="card">
+                                        <div class="card-header" id="cardHead">Customername{{}}</div>
+                                    <div class="card-body" style="background-color: white;">
+                                            <ul class="list-group">
+                                                    <li class="list-group-item">
+                                                        <ul style="list-style-type:none;align-items: center;">
+                                                            <li style="font-size:12px;">crs score</li>
+                                                            <li style="font-size:12px;">contracts:</li>
+                                                        </ul>
+                                                    </li>
+                                                  
+                                                </ul>
+                                               <button class="btn"ui-sref="creative.crm.contracts.contract({contId: customer._id})">View Contract</button>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="row">
+        <!--user company info-->
+        <div class="col"></div>
+        <!--contracts graph-->
+        <div class="col"></div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                <table id="example2" class="table table-bordered table-dark table-hover" ng-controller="custCtrl">
+                        <thead>
+                        <tr>
+                            <th class="col-md-2 col-xs-2">Customer name</th>
+                            <th class="col-md-2 col-xs-2">Email</th>
+                            
+                            
+                            <th class="col-md-2 col-xs-2">Phone</th>
+                            <th class="col-md-2 col-xs-2">Edit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="cust in customers">
+                            <td>{{ cust.fullName }}</td>
+                            <td>{{ cust.email }}</td>
+                            <td>{{ cust.phone }}</td>
+                            
+                            
+                            <td>
+                                <div class="dropdown">
+                                <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Action
+                                </a>
+                              
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                  <a class="dropdown-item" ng-click="deleteCust(cust._id)">Delete</a>
+                                  <a class="dropdown-item" ui-sref="creative.crm.customers.customer({custId: cust._id})">view info</a>
+                                  
+                                </div>
+                              </div>
+                            </td>
+                        </tr>
+                      
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+        </div>
+    </div>

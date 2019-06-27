@@ -1,0 +1,20 @@
+<div class="form-group">
+    <label for="exampleDropdownFormUsername">UserName</label>
+    <input type="text" ng-model="selectedUser.username" class="form-control" id="exampleDropdownFormUsername" placeholder="{{selectedUser.username}}">
+  </div>
+
+  <div class="form-group">
+    <label for="exampleDropdownFormMemberId">Set Membership</label>
+    <select ng-model="selectedUser.purchasedMembership" class="custom-select" id="inputGroupSelect11" >
+      <option selected>Choose...</option>
+      <div>
+        <option  ng-repeat="mem in members" value="{{ mem._id }}">{{ mem.mName }}</option>
+      </div>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="exampleDropdownFormPassword1">Email</label>
+    <input type="email" class="form-control" ng-model="selectedUser.email" id="exampleDropdownFormEmail" placeholder="{{selectedUser.email}}">
+  </div>
+  
+  <button class="btn" ng-click="updateUser()">update user</button>
