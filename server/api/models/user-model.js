@@ -17,11 +17,15 @@ var UserSchema = new Schema({
   email: String,
   fullName: {type: String},
   password: {
-        type: String,
-        required: true
+        type: String
     },
   socketId: String,
   token: String,
+  google: {
+    profile_sub: String,
+    refreshToken: String,
+    accessToken: String
+  },
   customers: [{type: Schema.Types.ObjectId, ref: 'customer'}],
   contracts: [{type: Schema.Types.ObjectId, ref: 'contract'}],
   todos: [{type: Schema.Types.ObjectId, ref: 'todoSchema'}],
@@ -63,6 +67,21 @@ UserSchema.methods.comparePassword = function(password, cb) {
         cb(isMatch);
     });
 };
+
+UserSchema.methods.newPassword = function(password){
+  var user = this;
+  var newPass = password;
+  bcrypt.genSalt(10, function(err, salt) {
+    if (err) return next(err);
+
+    bcrypt.hash(newPass, salt, function(err, hash) {
+        if (err) return next(err);
+        user.password = hash;
+        next();
+    });
+  });
+};
+
 
 UserSchema.methods.generateJWT = function(){
 

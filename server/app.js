@@ -2,6 +2,7 @@ var express = require('express');
 var config = require('./config/config.js');
 var mongoose = require('mongoose');
 var path = require('path');
+var cors = require('cors');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -47,6 +48,7 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, '../client/app/public')));
@@ -62,7 +64,7 @@ app.use('/api/convo', convoRoute);
 app.use('/api/crm', crmRoute);
 app.use('/api', todoRoute);
 app.use('/api', userRoute);
-app.use('/api/auth', authRoute);
+app.use(authRoute);
 
 
 app.get('*', function(req, res){

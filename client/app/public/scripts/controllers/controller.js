@@ -51,9 +51,16 @@ app.controller("lineCtrl", function ($scope) {
 });
        
 
-app.controller('authCtrl', ['$rootScope', '$scope', '$state', 'auth', function($rootScope, $scope, $state, auth){
+app.controller('authCtrl', ['$rootScope', '$scope', '$state', 'auth', '$http', function($rootScope, $scope, $state, auth, $http){
   $scope.User = {};
   $scope.newUser = {};
+  $scope.googleUrl = {};
+  $http.get('/api/auth/google').then(function(data){
+    console.log(data);   
+    $scope.googleUrl.info = data.data;
+});
+console.log($scope.googleUrl);
+  
   $scope.register = function(){
     auth.register($scope.newUser);
   };
@@ -98,12 +105,12 @@ app.controller('userManagementCtrl', function($scope, $state, userService, $stat
     $scope.users = userService.query();
     $state.reload();
   };
-
-
-
 });
 
-
+app.controller('userCtrl', ['$scope', 'auth', function($scope, auth){
+  $scope.user = auth.currentUser();
+  console.log("test " + $scope.user);
+}]);
 
 //single customer info
 app.controller('customerCtrl', ['$scope', 'custService', '$stateParams', 'auth', function($scope, custService, $stateParams, auth){

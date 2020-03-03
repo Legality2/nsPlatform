@@ -1,8 +1,47 @@
 const User = require('../models/user-model.js');
 
 const bcrypt = require('bcrypt');
-//create new user
+//create new user based on auth params
+module.exports.createUsrAuth = async (auth, req, res) => {
 
+    //creates user based on auth data
+
+    let googleUser = await auth;
+    User.findOne({email: googleUser.me.email}, function(err, usr){
+        if(usr){
+            var token;
+            token = usr.generateJWT();
+            var reUrl = encodeURIComponent('http://localhost:3000/#/auth/google/callback?token=' + token);
+            res.redirect('/#!/auth/google/callback?token=' + token);
+        } else if(!usr) {
+            const newUser = new User({
+                username: googleUser.me.email.split("@")[0],
+                email: googleUser.me.email,
+                fullName: googleUser.me.name,
+                googleInfo: {
+                    profile_sub: googleUser.me.sub,
+                    refreshToken: {},
+                    accessToken: {}
+                },
+                role: 'Basic'
+            });
+        
+        
+            newUser.save(function(err){
+                if(err){
+                    res.json(err);
+                } else {
+                    var token;
+                    token = newUser.generateJWT();
+                    console.log('user has been created');
+                    res.redirect('/#!/login');
+                }
+            });
+        }
+    })
+    
+
+};
 //get single user
 module.exports.getSingleUser = function(req, res){
     var id = req.params.id;

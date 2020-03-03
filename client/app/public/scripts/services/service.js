@@ -172,6 +172,12 @@ app.service('loginService', ['$resource', function($resource){
           login: {method: 'POST'}
   });
 }]);
+app.service('googleService', ['$resource', function($resource){
+  return $resource('/api/auth/google', {}, {
+    query: {method: 'GET'},      
+    login: {method: 'POST'}
+  });
+}]);
 app.service('signUpService', ['$resource', function($resource){
   return $resource('/api/auth/login', {}, {
           signup: {method: 'POST'}

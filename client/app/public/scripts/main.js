@@ -11,7 +11,7 @@ var app = angular.module('adminApp', ['ui.router', 'ngStorage','ngResource', 'an
             $state.go('creative.user.feed');
         };
     };
-    $urlRouterProvider.otherwise('/login');
+    
 
     $stateProvider
 
@@ -32,6 +32,15 @@ var app = angular.module('adminApp', ['ui.router', 'ngStorage','ngResource', 'an
             templateUrl: '/views/main.html',
             resolve: {
                 resolvedUser: checkforAuthUser
+            }
+        }).state('creative.userProfile', {
+            url: '/userProfile',
+            templateUrl: '/views/editProfile.html',
+            controller: 'userCtrl',
+            resolved: {
+                CurrentUser: function(resolvedUser){
+                        return resolvedUser;
+                }
             }
         })
         .state('creative.crm', {
@@ -159,7 +168,16 @@ var app = angular.module('adminApp', ['ui.router', 'ngStorage','ngResource', 'an
             url: '/signup',
             templateUrl: '/views/signup.html',
             controller: 'authCtrl'
-        })
+        }).state('google-callback', {
+            url: '/auth/google/callback?token',
+            templateUrl: '/views/loading.html',
+            controller: function($state, $http, auth){
+                console.log($state.params);
+                auth.saveToken($state.params.token);
+                $state.go('creative.crm.dash');
+                
+            }
+        });
 
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
        

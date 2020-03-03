@@ -1,83 +1,80 @@
 
-import { google } from 'googleapis';
+const { google } = require('googleapis');
+const OAuth2Data = require('./private/google_key.json');
 
-const googleConfig = {
-  clientId: '<GOOGLE_CLIENT_ID>', // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
-  clientSecret: '<GOOGLE_CLIENT_SECRET>', // e.g. _ASDFA%DFASDFASDFASD#FAD-
-  redirect: 'https://your-website.com/google-auth' // this must match your google api settings
-};
+const defaultScope = [
+  'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'
+];
+
+const CLIENT_ID = OAuth2Data.web.client_id;
+const CLIENT_SECRET = OAuth2Data.web.client_secret;
+const REDIRECT_URL = OAuth2Data.web.redirect_uris;
+
 
 /**
  * Create the google auth object which gives us access to talk to google's apis.
  */
-function createConnection() {
-  return new google.auth.OAuth2(
-    googleConfig.clientId,
-    googleConfig.clientSecret,
-    googleConfig.redirect
-  );
-}
+
+const createConnection = function() {
+  return new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
+};
+
+const getConnectionUrl = function(auth) {
+  return auth.generateAuthUrl({
+    access_type: 'offline',
+    prompt: 'consent',
+    scope:  defaultScope
+  });
+};
+
+const getGooglePlusApi = function(auth) {
+  return google.people({ version: 'v1', auth });
+};
+
+/**********/
+/** MAIN **/
+/**********/
 
 /**
- * This scope tells google what information we want to request.
+ * Part 1: Create a Google URL and send to the client to log in the user.
  */
-const defaultScope = [
-    'https://www.googleapis.com/auth/plus.me',
-    'https://www.googleapis.com/auth/userinfo.email',
-  ];
+module.export.urlGoogle = function(){
+  const auth = createConnection();
+  const url = getConnectionUrl(auth);
   
-  /**
-   * Get a url which will open the google sign-in page and request access to the scope provided (such as calendar events).
-   */
-  function getConnectionUrl(auth) {
-    return auth.generateAuthUrl({
-      access_type: 'offline',
-      prompt: 'consent', // access type and approval prompt will force a new refresh token to be made each time signs in
-      scope: defaultScope
-    });
-  }
-  
-  /**
-   * Create the google url to be sent to the client.
-   */
-  function urlGoogle() {
-    const auth = createConnection(); // this is from previous step
-    const url = getConnectionUrl(auth);
-    return url;
-  }
+  return url;
+};
 
-  /**
- * Helper function to get the library with access to the google plus api.
- */
-function getGooglePlusApi(auth) {
-    return google.plus({ version: 'v1', auth });
-  }
+async function verify(tk) {
+  const auth = createConnection();
+  const ticket = await auth.verifyIdToken({
+      idToken: tk.id_token,
+      audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+      // Or, if multiple clients access the backend:
+      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+  });
   
-  /**
-   * Extract the email and id of the google account from the "code" parameter.
-   */
-  function getGoogleAccountFromCode(code) {
-    
-    // get the auth "tokens" from the request
-    const data = await auth.getToken(code);
-    const tokens = data.tokens;
-    
-    // add the tokens to the google api so we have access to the account
-    const auth = createConnection();
-    auth.setCredentials(tokens);
-    
-    // connect to google plus - need this to get the user's email
-    const plus = getGooglePlusApi(auth);
-    const me = await plus.people.get({ userId: 'me' });
-    
-    // get the google id and email
-    const userGoogleId = me.data.id;
-    const userGoogleEmail = me.data.emails && me.data.emails.length && me.data.emails[0].value;
+  const payload = ticket.getPayload();
   
-    // return so we can login or sign up the user
-    return {
-      id: userGoogleId,
-      email: userGoogleEmail,
-      tokens: tokens, // you can save these to the user if you ever want to get their details without making them log in again
-    };
-  }
+  const userid = payload['sub'];
+  // If request specified a G Suite domain:
+  //const domain = payload['hd'];
+  return payload;
+};
+
+
+module.export = async function getGoogleAccountFromCode(code) {
+  const auth = createConnection();
+ const data = await auth.getToken(code);
+ const tokens = data.tokens;
+ auth.setCredentials(tokens);
+ const plus = getGooglePlusApi(auth);
+ const me = await plus.people.get({resourceName: "people/me", personFields: "names,emailAddresses"});
+ var info = await verify(tokens);
+ 
+ return {
+   me: info,
+   tokens: tokens,
+ };
+};
+
