@@ -1,0 +1,73 @@
+<div class="container">
+    <div class="row" ng-controller="fileCtrl">
+    <div class="col-sm-4">
+        <div class="card" style="width: 330px;">
+            <div class="card-header" style="background-color: #101731;">files</div>
+            <div class="card-body">
+              <ul class="row" style="list-style-type: none;margin-left:-30px;margin-right:-5px;">
+                  <li class="col-12" style="background-color: #101731c4;min-height: 2rem;" ng-repeat="file in files"><a ui-sref="creative.fileMGR.file({fileId: file.fileId})">{{ file.filename }}</a> 
+                    <div class="dropdown" style="float:right;">
+                        <a class="dropdown-toggle"  role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            
+                        </a>
+                      
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="margin-left:-140px;">
+                          <div style="min-width: 200px;">
+                              <h5>file</h5>
+                              <p>this is where file info will be</p>
+                          </div>
+                        </div>
+                      </div>
+                </li>
+                <li>
+                    
+                </li>
+              </ul>
+                          
+            </div>
+            <div class="card-footer">
+              <form name="myForm">
+                <fieldset>
+                  <legend>Upload on form submit</legend>
+                  Username:
+                  <input type="text" name="userName" ng-model="username" size="31" required>
+                  <i ng-show="myForm.userName.$error.required">*required</i>
+                  <br>Photo:
+                  <input type="file" ngf-select ng-model="picFile" name="file"    
+                         accept="image/*" ngf-max-size="2MB" required
+                         ngf-model-invalid="errorFile">
+                  <i ng-show="myForm.file.$error.required">*required</i><br>
+                  <i ng-show="myForm.file.$error.maxSize">File too large 
+                      {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
+                  <img ng-show="myForm.file.$valid" ngf-thumbnail="picFile" class="thumb"> <button ng-click="picFile = null" ng-show="picFile">Remove</button>
+                  <br>
+                  <button ng-disabled="!myForm.$valid" 
+                          ng-click="uploadPic(picFile)">Submit</button>
+                  <span class="progress" ng-show="picFile.progress >= 0">
+                    <div style="width:{{picFile.progress}}%" 
+                        ng-bind="picFile.progress + '%'"></div>
+                  </span>
+                  <span ng-show="picFile.result">Upload Successful</span>
+                  <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+                </fieldset>
+                <br>
+              </form>
+              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-box-arrow-in-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4.646 7.854a.5.5 0 0 0 .708 0L8 5.207l2.646 2.647a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 0 0 0 .708z"/>
+                <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-1 0v9a.5.5 0 0 0 .5.5z"/>
+                <path fill-rule="evenodd" d="M1.5 2.5A1.5 1.5 0 0 1 3 1h10a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 13 12h-1.5a.5.5 0 0 1 0-1H13a.5.5 0 0 0 .5-.5v-8A.5.5 0 0 0 13 2H3a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h1.5a.5.5 0 0 1 0 1H3a1.5 1.5 0 0 1-1.5-1.5v-8z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header" style="background-color: #101731;">File Name </div>
+                <div class="card-body">
+                    <ui-view></ui-view>
+                </div>
+            </div>
+        </div>
+</div>
+</div>

@@ -1,34 +1,57 @@
-var express = require('express');
-var config = require('./config/config.js');
-var mongoose = require('mongoose');
-var path = require('path');
-var cors = require('cors');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const config = require('./config/config.js');
+const mongoose = require('mongoose');
+const path = require('path');
+const cors = require('cors');
+const crypto = require('crypto');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const { createModel } = require('mongoose-gridfs');
+
 //models
-var User = require('./api/models/user-model.js');
+const User = require('./api/models/user-model.js');
+const fileModel = require('./api/models/file/file-model.js');
 //controllers
-var conversation = require('./api/models/messages/convoSchema.js');
-var message = require('./api/models/messages/msgModel.js');
-var convCtrl = require('./api/controllers/msgCtrl.js');
+const conversation = require('./api/models/messages/convoSchema.js');
+const message = require('./api/models/messages/msgModel.js');
+const convCtrl = require('./api/controllers/msgCtrl.js');
 //routes
-var authRoute = require('./api/routes/auth.js');
-var crmRoute = require('./api/routes/crm.js');
-var userRoute = require('./api/routes/userRoute.js');
-var todoRoute = require('./api/routes/todoRoute.js');
-var convoRoute = require('./api/routes/message.js');
-var app = express();
-var router = express.Router();
-var options = {
+const authRoute = require('./api/routes/auth.js');
+const crmRoute = require('./api/routes/crm.js');
+const userRoute = require('./api/routes/userRoute.js');
+const todoRoute = require('./api/routes/todoRoute.js');
+const convoRoute = require('./api/routes/message.js');
+const fileRoute = require('./api/routes/files.js');
+const app = express();
+const router = express.Router();
+const options = {
   user: "admin",
   pass: "password"
   };
+  const createReadStream = require('fs');
+   
+  // or create custom bucket with custom options
+
+
+  const storage = multer.diskStorage({
+    destination: '../../files',
+     filename: function (req, file, cb) {
+      crypto.pseudoRandomBytes(16, function (err, raw) {
+        if (err) return cb(err)
+          cb(null, path.extname(file.originalname))
+  
+      });
+    }
+  });
+  const upload = multer({ storage: storage });
+  
   
 //connection to database
 //Set up default mongoose connection
-var mongoDB = config.db;
+const mongoDB = config.db;
 mongoose.connect(mongoDB,  { useNewUrlParser: true }, function(){
   console.log('connecting to NS Datbase');
 });
@@ -36,11 +59,16 @@ mongoose.connect(mongoDB,  { useNewUrlParser: true }, function(){
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
 //Get the default connection
-var db = mongoose.connection;
+const db = mongoose.connection;
+
 
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+
+
 // view engine setup
+
 
 app.set('view engine', 'ejs');
 
@@ -48,8 +76,14 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
+  next();
+});
+app.use(express.urlencoded({extended: true}))
+
 app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, '../client/app/public')));
 app.use('/assets', express.static(path.join(__dirname, '../client/app/assets')));
@@ -63,6 +97,7 @@ app.use(router);
 app.use('/api/convo', convoRoute);
 app.use('/api/crm', crmRoute);
 app.use('/api', todoRoute);
+app.use('/api', fileRoute);
 app.use('/api', userRoute);
 app.use(authRoute);
 
@@ -71,15 +106,28 @@ app.get('*', function(req, res){
   res.sendFile(path.join(__dirname, '../client/app/index.html'));
 });
 
-app.post('/con/new', function(req, res, next){
- 
+app.post('/file/new', upload.single('upl'), (req, res, next) => { 
+  console.log(req);
+
+  const readStream = createReadStream(req.file.path);
+  const options = ({ filename: req.file.originalname, contentType: req.file.mimetype });
+
+
+  const newFile = new fileModel({});
+      newFile.fileType = req.file.mimetype;
+      newFile.fileInfo.fileName = req.file.originalname; 
   
-  console.log(req.body);
+
+      newFile.save(function(err){
+
+        if(err) res,json(err);
+        res.json({data: 'file has been upload'});
+      });
 });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -95,4 +143,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = {app, db};

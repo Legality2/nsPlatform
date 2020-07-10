@@ -11,8 +11,8 @@ module.exports.createUsrAuth = async (auth, req, res) => {
         if(usr){
             var token;
             token = usr.generateJWT();
-            var reUrl = encodeURIComponent('http://localhost:3000/#/auth/google/callback?token=' + token);
-            res.redirect('/#!/auth/google/callback?token=' + token);
+            var reUrl = encodeURIComponent('http://192.168.0.169:3000/#/auth/google/callback?token=' + token);
+            res.redirect('http://192.168.0.169:3000/#!/auth/google/callback?token=' + token);
         } else if(!usr) {
             const newUser = new User({
                 username: googleUser.me.email.split("@")[0],
@@ -23,7 +23,7 @@ module.exports.createUsrAuth = async (auth, req, res) => {
                     refreshToken: {},
                     accessToken: {}
                 },
-                role: 'Basic'
+                role: 'Admin'
             });
         
         
@@ -34,7 +34,8 @@ module.exports.createUsrAuth = async (auth, req, res) => {
                     var token;
                     token = newUser.generateJWT();
                     console.log('user has been created');
-                    res.redirect('/#!/login');
+                    var reUrl = encodeURIComponent('http://localhost:3000/#/auth/google/callback?token=' + token);
+                    res.redirect('/#!/auth/google/callback?token=' + token);
                 }
             });
         }

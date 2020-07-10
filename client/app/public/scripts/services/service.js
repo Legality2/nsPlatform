@@ -36,7 +36,7 @@ app.factory('auth', ['$http','$window', '$state', '$localStorage', 'loginService
       if(auth.isLoggedIn()){
         var token = auth.getToken();
         var payload = JSON.parse($window.atob(token.split('.')[1]));
-          console.log(payload);
+          
         
       };
       return payload;
@@ -44,7 +44,7 @@ app.factory('auth', ['$http','$window', '$state', '$localStorage', 'loginService
 
     auth.currentUserRole = function(){
       var user = auth.currentUser();
-
+      console.log(user);
       return user;
     };
 
@@ -161,7 +161,7 @@ app.service('userService', ['$resource', function($resource){
   return $resource('/api/user/:id', {}, {
           query: {method: 'GET', isArray: true},
           querySelect: {method: 'GET', isArray: true, params: {id: '@id'}},
-          single: {method: 'GET', isArray: true, params: {id: '@id'}},
+          single: {method: 'GET', params: {id: '@id'}},
           create: {method: 'POST'},
           update: {method: 'PUT', params: {id: '@id'}},
           remove: {method: 'DELETE', params: {id: '@id'}}

@@ -18,6 +18,32 @@ app.controller('navCtrl', function($rootScope, $scope, auth){
 }
 });
 
+app.controller('fileController', function($scope, $http){
+  $scope.myFile = {};
+  //upload file
+   $scope.fileUpload =  async function(f){
+    var formData = new FormData();
+    formData.append('fileName', $scope.myFile.name);
+    formData.append('upl', $scope.myFile);
+
+
+    $http.post('/api/file/upload', formData, {
+      transformRequest: angular.identity,
+      headers: {'Content-Type': undefined}
+    }).then(function(data){
+      if(data = null){
+        console.log('error');
+      } else {
+        console.log(data.data);
+      };
+    });
+    
+  };
+  //retrieve file by id
+
+  //remove file
+});
+
 app.controller("lineCtrl", function ($scope) {
 
   $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
@@ -55,10 +81,13 @@ app.controller('authCtrl', ['$rootScope', '$scope', '$state', 'auth', '$http', f
   $scope.User = {};
   $scope.newUser = {};
   $scope.googleUrl = {};
-  $http.get('/api/auth/google').then(function(data){
-    console.log(data);   
-    $scope.googleUrl.info = data.data;
-});
+  $scope.getGAuth = function(){
+    $http.get('/api/auth/google').then(function(data){
+      console.log(data);   
+      $scope.googleUrl.info = data.data;
+  });
+  };
+  
 console.log($scope.googleUrl);
   
   $scope.register = function(){
@@ -93,7 +122,7 @@ app.controller('userManagementCtrl', function($scope, $state, userService, $stat
 }
   $scope.users = userService.query();
 
-  $scope.selectedUser = userService.single({id: $stateParams.userId});
+  
   
 
   $scope.createUser = function(obj){
@@ -107,9 +136,10 @@ app.controller('userManagementCtrl', function($scope, $state, userService, $stat
   };
 });
 
+
 app.controller('userCtrl', ['$scope', 'auth', function($scope, auth){
   $scope.user = auth.currentUser();
-  console.log("test " + $scope.user);
+  console.log($scope.user);
 }]);
 
 //single customer info

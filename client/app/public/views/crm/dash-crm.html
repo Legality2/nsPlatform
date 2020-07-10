@@ -31,6 +31,15 @@
                 <div class="card-footer">Events</div>
             </div>
         </div>
+        <div class="col">
+            <div class="card" ng-controller="fileCtrl">
+                <form action="/file/new" method="post" enctype="multipart/form-data">
+                    <input name="name" type="text" />
+                    <input type="file" name="upl" />
+                    <input type="submit" value="Submit">
+                  </form>
+            </div>
+        </div>
     
         <div class="col-5">
             <div class="card" style=" background-color: darkslategray;">

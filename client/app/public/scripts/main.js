@@ -1,4 +1,4 @@
-var app = angular.module('adminApp', ['ui.router', 'ngStorage','ngResource', 'angularGrid', 'chart.js', 'ui.bootstrap']).config(function($stateProvider, $urlRouterProvider) {
+var app = angular.module('adminApp', ['ui.router', 'ngStorage','ngResource', 'angularGrid', 'chart.js', 'ui.bootstrap', 'ngFileUploaf']).config(function($stateProvider, $urlRouterProvider) {
     
     function checkforAuthUser(auth, $state){
          if(!auth.isLoggedIn()){
@@ -124,6 +124,23 @@ var app = angular.module('adminApp', ['ui.router', 'ngStorage','ngResource', 'an
                         return resolvedUser;
                 }
             }
+        }).state('creative.fileMGR', {
+            url: '/file-manager',
+            templateUrl: '/views/users/files/fileView.html',
+            resolved: {
+                CurrentUser: function(resolvedUser){
+                        return resolvedUser;
+                }
+            }
+        }).state('creative.fileMGR.file', {
+            url: '/file/{fileId}',
+            controller: 'fileViewCtrl',
+            templateUrl: '/views/users/files/file.html',
+            resolved: {
+                CurrentUser: function(resolvedUser){
+                        return resolvedUser;
+                }
+            }
         })  
         
         .state('creative.feed', {
@@ -156,15 +173,16 @@ var app = angular.module('adminApp', ['ui.router', 'ngStorage','ngResource', 'an
         }).state('creative.userManagement.createUser', {
             url: '/createUser',
             templateUrl: '/views/admin/user/createUser.html'
-        }).state('creative.userManagement.editUser', {
-            url: '/editUser/{userId}',
-            controller: 'userManagementCtrl',
-            templateUrl: '/views/admin/user/editUser.html'
         })
-        .state('creative.userManagement.userTable', {
-            url: '/userTable',
+        .state('creative.userManagement.manager', {
+            url: '/manager',
             templateUrl: '/views/admin/user/users.html'
-        }).state('signup', {
+        }).state('creative.userManagement.manager.editUser', {
+            url: '/editUser/{userId}',
+            controller: 'userEditCtrl',
+            templateUrl: '/views/admin/user/eUser.html'
+        })
+        .state('signup', {
             url: '/signup',
             templateUrl: '/views/signup.html',
             controller: 'authCtrl'

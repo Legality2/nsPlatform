@@ -1,45 +1,86 @@
-<div class="card">
-    <div class="card-body" style="background-color: #212121;">
-       <div class="card" style="background-color: #00335b;color: white;">
-           <h3 class="card-header text-center font-weight-bold text-uppercase py-4">User List</h3>
-           <div class="card-body">
-            <table id="example2" class="table table-bordered table-hover" style="color: white;" ng-controller="userManagementCtrl">
-      <thead>
-      <tr>
-          <th class="col-md-2 col-xs-2">Usernames</th>
-          <th class="col-md-2 col-xs-2">Email</th>
-          <th class="col-md-2 col-xs-2">contracts</th>
-          <th class="col-md-2 col-xs-2">customers</th>
-          <th class="col-md-2 col-xs-2">last Active</th>
-          <th class="col-md-2 col-xs-2">Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr ng-repeat="user in users">
-          <td>{{ user.username }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.contracts.length }}</td>
-          <td>{{ user.customers.length }}</td>
-          <td>temp</td>
-          <td>
-              <div class="dropdown">
-              <a class="btn-rotate dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="nc-icon nc-settings-gear-65"></i>
-              </a>
-            
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" ng-click="deleteUser(user._id)">Delete</a>
-                <a class="dropdown-item" >Another action</a>
-                <a class="dropdown-item" ui-sref="creative.userManagement.editUser({userId: user._id})" > Edit User
-                  
-                </a>
-              </div>
-            </div>
-          </td>
-      </tr>
+<div class="card" style="background-color: #010b10;">
     
-      </tfoot>
-            </table>
-          </div>
+
+
+
+
+      <div class="card" style="background-color: #f4f3ef;" >
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="card">
+                        <div class="card-header" id="cardHead" style="background-color: rgba(0,38,73,0.67);"><h5>Users</h5></div>
+                        <div class="card-body" style="overflow-y: scroll;min-height: 350px;">
+                          <div class="text-center"><input type="text" placeholder="Search.."></div>
+                            <ul class="list-group">
+                                <li ng-repeat="user in users" class="list-group-item" style="min-height:50px;">
+                                    <div style="border:3px solid black;">
+                                    <ul class="" style="list-style-type: none;color: #333333;padding: 10px;width: 100%;">
+                                        <li style=" display: inline-block;border-right: 3px solid black;padding: 4px;">test</li>
+                                        <li style=" display: inline-block;">{{ user.username }}</li>
+                                        <li style=" display: inline-block;"><div class="dropdown">
+                                          <a class="btn-rotate dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="nc-icon nc-settings-gear-65"></i>
+                                          </a>
+                                        
+                                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" ng-click="deleteUser(user._id)">Delete</a>
+                                            <a class="dropdown-item" >Another action</a>
+                                            <a class="dropdown-item" ui-sref="creative.userManagement.manager.editUser({userId: user._id})" > Edit User
+                                              
+                                            </a>
+                                          </div>
+                                        </div></li>
+                                    </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="card ">
+                        <div class="card-header" style="background-color: rgba(0,38,73,0.67);"></div>
+                        <div class="card-body" style="min-height: 219px;">
+                          <ui-view></ui-view>
+                        </div>
+                    </div>
+                    <div class="card ">
+                            <div class="card-header" style="background-color: rgba(0,38,73,0.67);"></div>
+                            <div class="card-body" style="height: 119px;"></div>
+                        </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="card" style="margin-top: 20px;">
+                        <div class="card-header" id="cardHead" style="height:50px;">
+                            <h5 style="color: white;">Recently Created Users</h5>
+                        </div>
+                        <div class="card-body" style="height: 220px;margin: 14px;overflow-x: scroll;overflow-y:hidden;">
+                            <div class="row">
+                                <div class="col-3" ng-repeat="user in users">
+                                    <div class="card">
+                                            <div class="card-header" id="cardHead">User: {{user.username}}</div>
+                                        <div class="card-body" style="background-color: white;">
+                                                <ul class="list-group">
+                                                        <li class="list-group-item">
+                                                            <ul style="list-style-type:none;align-items: center;">
+                                                                <li style="font-size:12px;">Created Date</li>
+                                                                <li style="font-size:12px;">Role: {{user.role}}</li>
+                                                            </ul>
+                                                        </li>
+                                                      
+                                                    </ul>
+                                                   <button class="btn"ui-sref="creative.crm.contracts.contract({contId: customer._id})">View Contract</button>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+    </div>
