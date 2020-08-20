@@ -9,7 +9,7 @@
     "@uirouter/angularjs": "^1.0.7",
     "angular-chart.js": "^1.1.1",
     "angulargrid": "^0.6.5",
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
